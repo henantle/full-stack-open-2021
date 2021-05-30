@@ -1,0 +1,24 @@
+note over browser:
+User opens spa app webpage
+end note
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa
+server-->browser: HTTP response 200 OK
+server->browser: Returns html of web page
+note over browser:
+Fetch styling file and apply styles
+end note
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server-->browser: main.css
+note over browser:
+Fetch and execute javascript file
+end note
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+server-->browser: main.js
+note over browser:
+Fetch data for website
+end note
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+server-->browser: ["content":"","date":"2021-05-29T16:53:32.548Z"}, ...]
+note over browser:
+javascript renders fetched data
+end note
