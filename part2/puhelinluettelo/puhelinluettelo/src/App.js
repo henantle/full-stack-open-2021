@@ -3,12 +3,14 @@ import Persons from './components/persons'
 import Personform from './components/personform'
 import React, { useState, useEffect } from 'react'
 import Personservice from './services/personservice'
+import Notification from './components/notification'
 
 const App = () => {
   const [ persons, setPersons] = useState([]) 
   const [ newName, setNewName ] = useState('')
   const [ newPhoneNumber, setNewPhoneNumber ] = useState('')
   const [ newFilterValue, setNewFilterValue ] = useState('')
+  const [ notificationMessage, setNotificationMessage ] = useState(null)
 
   useEffect(() => {
     Personservice
@@ -26,6 +28,12 @@ const App = () => {
       Personservice.exterminate(id).then(() => {
         const deletePersonFromUI = persons.filter((person) => person.id !== id);
         setPersons(deletePersonFromUI);
+        setNotificationMessage(
+          `Contact '${person.name}' was successfully removed from server`
+        )
+        setTimeout(() => {
+          setNotificationMessage(null)
+        }, 5000)
       });
     }
   };
@@ -36,6 +44,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notificationMessage} />
       filter shown with <Filter setNewFilterValue={setNewFilterValue}/>
       <Personform 
       newName={newName} 
@@ -43,8 +52,12 @@ const App = () => {
       newPhoneNumber={newPhoneNumber} 
       setNewPhoneNumber={setNewPhoneNumber}
       persons = {persons}
-      setPersons = {setPersons} />
-      <Persons namesToShow={namesToShow} handleDelete={handleDelete} />
+      setPersons = {setPersons} 
+      setNotificationMessage = {setNotificationMessage} />
+      <Persons 
+      namesToShow={namesToShow} 
+      handleDelete={handleDelete} 
+      setNotificationMessage = {setNotificationMessage} />
     </div>
   )
 

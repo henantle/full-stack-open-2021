@@ -9,6 +9,7 @@ const Personform = (props) => {
     const setPersons = props.setPersons
     const setNewName = props.setNewName
     const setNewPhoneNumber = props.setNewPhoneNumber
+    const setNotificationMessage = props.setNotificationMessage
 
     const addName = (event) => {
         event.preventDefault()
@@ -28,6 +29,12 @@ const Personform = (props) => {
             console.log(personId)
             personservice.update(personId, updatedContact).then((returnedContact) => {
               setPersons(persons.map((person) => person.id !== personId ? person : returnedContact))
+              setNotificationMessage(
+                `Contact '${updatedContact.name}' was successfully updated to server`
+              )
+              setTimeout(() => {
+                setNotificationMessage(null)
+              }, 5000)
             })
           }
         } else {
@@ -36,6 +43,12 @@ const Personform = (props) => {
               setPersons(persons.concat(returnedContact))
               setNewName('')
               setNewPhoneNumber('')
+              setNotificationMessage(
+                `Contact '${contactObject.name}' was successfully saved to server`
+              )
+              setTimeout(() => {
+                setNotificationMessage(null)
+              }, 5000)
             })
         }
       }
