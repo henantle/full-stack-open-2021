@@ -1,11 +1,14 @@
 import React from 'react'
 
 const Person = (props) => {
+    const handleDelete = props.handleDelete
     console.log(props);
+
     return (
-        <p>
-            {props.name} {props.phoneNumber}
-        </p>
+        <div>
+        <span>{props.name} {props.number}</span>
+        <button onClick={() => handleDelete(props.id)}>delete</button>
+        </div>
     )
 }
 

@@ -8,7 +8,7 @@ const App = () => {
   const [ newFilterValue, setNewFilterValue ] = useState('')
 
   useEffect(() => {
-    console.log('effect')
+    console.log('effect countries')
     axios.get('https://restcountries.eu/rest/v2/all').then(response => {
       console.log('promise fulfilled')
       setCountries(response.data)
