@@ -17,7 +17,7 @@ const App = () => {
       .getAll()
       .then(initialPersons => {
         console.log(initialPersons)
-        setPersons(initialPersons)
+        setPersons(persons.concat(initialPersons))
       })
   }, [])
 
