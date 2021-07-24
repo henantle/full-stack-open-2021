@@ -32,7 +32,7 @@ app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>')
 })
 
-app.get('/api/persons', (response) => {
+app.get('/api/persons', (request, response) => {
   Person.find({}).then(persons => {
     response.json(persons)
   })
@@ -103,6 +103,16 @@ app.delete('/api/persons/:id', (request, response, next) => {
       response.status(204).end()
     })
     .catch(error => next(error))
+})
+
+app.get('/info', (req, res) => {
+  Person.find({}).then((persons) => {
+    res.send(
+      `<div>
+    <span>Phonebook has info for ${persons.length} people</span></div>
+  <span>${new Date().toString()}</span>`,
+    )
+  })
 })
 
 app.use(unknownEndpoint)
