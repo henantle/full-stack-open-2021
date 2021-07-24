@@ -5,8 +5,8 @@ require('dotenv').config()
 const app = express()
 const Person = require('./models/person')
 
-morgan.token('body', (req, res) => JSON.stringify(req.body));
-app.use(morgan(':method :url :status :response-time ms - :res[content-length] :body - :req[content-length]'));
+morgan.token('body', (req) => JSON.stringify(req.body))
+app.use(morgan(':method :url :status :response-time ms - :res[content-length] :body - :req[content-length]'))
 
 app.use(express.static('build'))
 app.use(express.json())
@@ -32,7 +32,7 @@ app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>')
 })
 
-app.get('/api/persons', (request, response) => {
+app.get('/api/persons', (response) => {
   Person.find({}).then(persons => {
     response.json(persons)
   })
@@ -48,29 +48,24 @@ app.get('/api/persons/:id', (request, response, next) => {
       }
     })
     .catch(error => {
+      console.log(error)
       console.log(error => next(error))
       response.status(400).send({ error: 'malformatted id' })
     })
 })
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
   const body = request.body
 
   if (!body.name) {
-    return response.status(400).json({ 
-      error: 'name missing' 
+    return response.status(400).json({
+      error: 'name missing'
     })
   }
 
   if (!body.number) {
-    return response.status(400).json({ 
-      error: 'number missing' 
-    })
-  }
-
-  if(persons.find(p => p.name === body.name)) {
-    return response.status(400).json({ 
-      error: 'name nust be unique' 
+    return response.status(400).json({
+      error: 'number missing'
     })
   }
 
@@ -80,10 +75,10 @@ app.post('/api/persons', (request, response) => {
   })
 
   person.save().then(savedPerson => savedPerson.toJSON())
-  .then(savedAndFormattedPerson => {
-    response.json(savedAndFormattedPerson)
-  }) 
-  .catch(error => next(error))
+    .then(savedAndFormattedPerson => {
+      response.json(savedAndFormattedPerson)
+    })
+    .catch(error => next(error))
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
@@ -104,16 +99,10 @@ app.put('/api/persons/:id', (request, response, next) => {
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndRemove(request.params.id)
     .then(result => {
+      console.log(result)
       response.status(204).end()
     })
     .catch(error => next(error))
-})
-
-app.get('/info', (request, response) => {
-  response.send(`<div>
-    <p>Phonebook has info for ${persons.length} people</p>
-    <p>${new Date().toString()}</p>
-  </div>`)
 })
 
 app.use(unknownEndpoint)

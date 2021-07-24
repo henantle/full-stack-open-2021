@@ -28,18 +28,19 @@ const person = new Person({
   number: numberArgs,
 })
 
-if(nameArgs == null && numberArgs == null) {
-console.log("phonebook:")
-Person.find({}).then(result => {
-  result.forEach(person => {
-    console.log(`${person.name} ${person.number}`)
+if(nameArgs === null && numberArgs === null) {
+  console.log('phonebook:')
+  Person.find({}).then(result => {
+    result.forEach(person => {
+      console.log(`${person.name} ${person.number}`)
+    })
+    mongoose.connection.close()
   })
-  mongoose.connection.close()
-})
 }
-if(nameArgs != null && numberArgs != null) {
-person.save().then(response => {
-  console.log(`added ${person.name} number ${person.number} to phonebook`)
-  mongoose.connection.close()
-})
+if(nameArgs !== null && numberArgs !== null) {
+  person.save().then(response => {
+    console.log(response)
+    console.log(`added ${person.name} number ${person.number} to phonebook`)
+    mongoose.connection.close()
+  })
 }
